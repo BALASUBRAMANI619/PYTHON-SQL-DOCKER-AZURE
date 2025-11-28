@@ -30,6 +30,8 @@ class User(db.Model):
 with app.app_context():
     db.create_all()
 
+
+
 # ---------- Routes ----------
 
 
@@ -49,11 +51,39 @@ def create_user():
         return redirect(url_for("home"))
     return render_template('create.html',title="Add New User")
 
+
+# ---------- EDIT TABLE ----------
+
+@app.route("/edit/<int:user_id>", methods=["GET", "POST"])
+def edit_user(user_id):
+    user = User.query.get_or_404(user_id)
+
+    if request.method == "POST":
+        user.name = request.form["name"]
+        user.email = request.form["email"]
+
+        db.session.commit()
+        return redirect(url_for("home"))
+
+    return render_template("edit.html", title="Edit User", user=user)
+
+
+# ---------- DELETE ROW ----------
+
+@app.route("/delete/<int:user_id>", methods=["GET", "POST"])
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for("home"))
+
+
 @app.route("/")
 def home():
     title = "User list"
     users = User.query.all()   # Fetch all users from the database
     return render_template('home.html', title=title,users=users)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
