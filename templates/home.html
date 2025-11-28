@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<a href="{{ url_for('create_user') }}" class="btn btn-primary mb-3">Add New User</a><br>
 
+{{ title }}
 {% if users %}
     <table class="table table-bordered">
         <thead>

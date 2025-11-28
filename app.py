@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,redirect, url_for,request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
@@ -31,6 +31,23 @@ with app.app_context():
     db.create_all()
 
 # ---------- Routes ----------
+
+
+@app.route("/create", methods=["GET", "POST"])
+def create_user():
+    if request.method == 'POST':
+        name = request.form["name"]
+        email = request.form["email"]
+
+        # Create a new User object
+        new_user = User(name=name, email=email)
+
+        # Save to MySQL
+        db.session.add(new_user)
+        db.session.commit()
+
+        return redirect(url_for("home"))
+    return render_template('create.html',title="Add New User")
 
 @app.route("/")
 def home():
