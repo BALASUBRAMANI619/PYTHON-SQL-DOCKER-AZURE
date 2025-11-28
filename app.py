@@ -34,8 +34,9 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    title = "Home Page"
-    return render_template('home.html', title=title)
+    title = "User list"
+    users = User.query.all()   # Fetch all users from the database
+    return render_template('home.html', title=title,users=users)
 
 if __name__ == "__main__":
     app.run(debug=True)
