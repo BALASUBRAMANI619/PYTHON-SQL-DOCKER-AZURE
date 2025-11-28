@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{{ url_for('create_user') }}" class="btn btn-primary mb-3">Add New User</a><br>
 
-{{ title }}
+<a href="{{ url_for('create_user') }}" class="btn btn-primary mb-3">+ Add New User</a>
+
 {% if users %}
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th width="200">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
         {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>
-                    <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                
-                    <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-warning btn-sm">Delete</a>
-                </td>
-            </tr>
-
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{{ url_for('delete_user', user_id=user.id) }}" 
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this user?');">
+                    Delete
+                </a>
+            </td>
+        </tr>
         {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
 {% else %}
-    <p>No users found yet.</p>
+<p class="text-muted">No users found.</p>
 {% endif %}
 
 {% endblock %}
